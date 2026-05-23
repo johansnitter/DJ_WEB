@@ -49,7 +49,7 @@ export default function Reserva() {
                 cantidadHoras: horas
             };
 
-            const resEvento = await fetch('http://localhost:5000/api/eventos', {
+            const resEvento = await fetch('/api/eventos',{
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(payloadEvento)
@@ -61,7 +61,7 @@ export default function Reserva() {
                 throw new Error(dataEvento.mensaje || 'Error al validar los datos del evento.');
             }
 
-            const resPago = await fetch('http://localhost:5000/api/pagos/crear-link', {
+            const resPago = await fetch('/api/pagos/crear-link',{
                 method: 'POST'
             });
 

@@ -6,6 +6,7 @@ const rateLimit = require('express-rate-limit');
 const connectDB = require('./config/db');
 
 const app = express();
+app.set('trust proxy', 1);
 connectDB();
 
 // ── Seguridad HTTP headers ────────────────────────────────────────────────────
@@ -20,6 +21,10 @@ app.use(cors({
     origin: (origin, callback) => {
         // Permitir peticiones sin origin (ej. Postman, curl) solo en desarrollo
         if (!origin && process.env.NODE_ENV !== 'production') return callback(null, true);
+        
+        // 👇 LA LÍNEA MÁGICA: Permitir cualquier link dinámico de Ngrok 👇
+        if (origin && origin.includes('ngrok-free.dev')) return callback(null, true);
+
         if (allowedOrigins.includes(origin)) return callback(null, true);
         callback(new Error(`Origen no permitido por CORS: ${origin}`));
     },
